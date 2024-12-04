@@ -1,18 +1,19 @@
-# Usa una imagen base con Python
-FROM python:3.8.8
+FROM python:3.9-slim
 
-# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos necesarios
 COPY requirements.txt .
+COPY main.py .
+COPY vectorizer.joblib .
+COPY multioutput_model.joblib .
+COPY modelo_entrenado.joblib .
+
+# Configurar NLTK
+RUN mkdir -p /usr/share/nltk_data
+ENV NLTK_DATA=/usr/share/nltk_data
 RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m nltk.downloader punkt stopwords wordnet
 
-# Copia el resto del código
-COPY . .
-
-# Exponer el puerto 8000 para la API
 EXPOSE 8000
 
-# Comando para iniciar la aplicación
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
