@@ -9,6 +9,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+from typing import List
 
 # Descargar recursos de NLTK
 nltk.download('punkt')
@@ -53,7 +54,7 @@ def extraer_text(url):
 class InputData(BaseModel):
     text: HttpUrl 
 @app.post("/predict")
-def predict(data: InputData):
+def predict(data: List[InputData]):
     resultados = []
     try:
         for url in data:
